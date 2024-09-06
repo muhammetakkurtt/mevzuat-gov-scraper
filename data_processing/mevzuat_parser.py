@@ -115,7 +115,6 @@ for entry in tqdm(data, desc="Kanunları işleme", unit="kanun"):
         else:
             kanun_adi_pattern_small = r'((?:\d{1,2}/\d{1,2}/\d{4}\s+)?[\w\s,()\dÎîÛûÂâÊêÔô\'’\-\"“”]+(?:Kanunu|Hakkında Kanun|İlişkin Kanun))'
             kanun_adi_match = re.search(kanun_adi_pattern_small, text, re.IGNORECASE)
-            print(kanun_adi_match)
             # Eğer bir eşleşme bulunduysa, match object'ten group(1)'i alıyoruz
             kanun_adi = kanun_adi_match.group(1).upper() if kanun_adi_match else None
   
