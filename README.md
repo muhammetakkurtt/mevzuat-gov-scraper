@@ -49,7 +49,8 @@ Gerekli paketler:
 Selenium'un çalışması için tarayıcı sürücüsüne ihtiyacınız olacak. Chrome kullanıyorsanız, `webdriver_manager` paketi otomatik olarak en uygun sürücüyü indirecektir. Proje, bu işlemi otomatik hale getirmek için gerekli ayarları içerir.
 
 ## Kullanım
-
+1. Clone this repository
+2. Move to the `mevzuat-gov-scraper` directory
 ### GUI Arayüzü Verileri Kazıma
 
 Proje, kullanıcının başlangıç ve bitiş yılını girerek kolayca Scrapy örümceğini başlatabileceği bir GUI arayüzü sunar. GUI'yi başlatmak için şu komutu çalıştırabilirsiniz:
