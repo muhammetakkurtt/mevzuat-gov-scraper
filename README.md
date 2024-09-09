@@ -29,7 +29,7 @@ Bu proje, belirlediğiniz yıllar arasında yayımlanan mevzuatlar/kanunlar içi
 ## Kurulum
 
 ### Adım 1: Gerekli Paketlerin Yüklenmesi
-
+Proje Python 3.11.9 sürümü ile test edilmiştir.
 Projeyi çalıştırmadan önce, gerekli Python paketlerini yüklemeniz gerekmektedir. Aşağıdaki komut ile gerekli paketleri yükleyebilirsiniz:
 
 ```bash
