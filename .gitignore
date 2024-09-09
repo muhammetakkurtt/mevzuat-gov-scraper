@@ -21,3 +21,5 @@ env/
 *.lock
 
 .ipynb_checkpoints
+
+mevzuat-gov-dataset/
