@@ -74,14 +74,14 @@ Her iki seçenek için de:
 - Belirli yıllar arasındaki verileri çekebilir
 - Tüm yılların verilerini çekebilirsiniz
 
-Meta veri çekimi için mevzuat türünü seçebilirsiniz:
+İstediğiniz mevzuat türünü seçebilirsiniz:
 - Kanun
 - Cumhurbaşkanlığı Kararnamesi
 - Tüzük
 - Yönetmelik
 - ve diğerleri...
 
-### Mevzuat Verilerini Ayrıştırma
+### Mevzuat Verilerini Ayrıştırma (Sadece Kanunlar İçin)
 Toplanan mevzuat verilerini ayrıştırmak için mevzuat_parser.py dosyası kullanılır. JSON dosyasındaki ham verileri işler, regex ve doğal dil işleme (NLP) yöntemleriyle kanun adı, kanun numarası, kabul tarihi, resmi gazete bilgileri ve kanun maddelerini çıkarır. Ayrıştırma işlemini başlatmak için şu komutu çalıştırabilirsiniz:
 ```bash
 python data_processing/mevzuat_parser.py
@@ -93,7 +93,8 @@ Dil modeli olarak [tr_core_news_lg](https://huggingface.co/turkish-nlp-suite/tr_
 - `main.py`: Projenin ana dosyasıdır. Kullanıcı arayüzünü başlatır ve Scrapy örümceğini çalıştırır.
 - `mevzuat_parser.py`: JSON dosyasındaki ham veriyi parse eden ve ayrıştıran Python betiğidir.
 - `mevzuat_spider.py`: Scrapy framework'ü ile web sitesinden mevzuatları kazıyan örümceği içerir.
-## Mevzuat Verileri
+
+## Mevzuat Verileri (Kanunlar)
 Bu projede kullanılan mevzuat verilerine Hugging Face üzerinde ulaşabilirsiniz:
 
 ### Mevzuat-Gov Dataset

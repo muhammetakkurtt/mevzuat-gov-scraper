@@ -28,7 +28,7 @@ def get_output_filename(filename, is_metadata=False):
     return filename
 
 # Scrapy örümceğini başlatan fonksiyon
-def run_spider(start_year=None, end_year=None, filename=None):
+def run_spider(start_year=None, end_year=None, filename=None, mevzuat_turu="Kanun"):
     filename = get_output_filename(filename, is_metadata=False)
     settings = get_project_settings()
     settings.set('FEEDS', {
@@ -39,22 +39,41 @@ def run_spider(start_year=None, end_year=None, filename=None):
         }
     })
     process = CrawlerProcess(settings)
-    process.crawl(MevzuatSeleniumSpider, start_year=start_year, end_year=end_year)
+    process.crawl(MevzuatSeleniumSpider, 
+                 start_year=start_year, 
+                 end_year=end_year,
+                 mevzuat_turu=mevzuat_turu)
     process.start()
 
 # Başlangıç ve bitiş yılı girişlerini almak için Tkinter GUI
 def start_gui():
     def on_submit():
+        selected_type = mevzuat_turu_var.get()
+        if selected_type in ["Cumhurbaşkanı Kararları", "Cumhurbaşkanlığı Genelgeleri"]:
+            messagebox.showwarning(
+                "Desteklenmeyen Mevzuat Türü",
+                "Seçilen mevzuat türü için tam metin çekimi desteklenmemektedir. Metaverileri çekerek doküman linklerini alabilirsiniz. Lütfen farklı bir mevzuat türü seçiniz."
+            )
+            return
+            
         start_year, end_year = validate_years(entry_start_year.get(), entry_end_year.get())
         if start_year is not None and end_year is not None:
             filename = get_output_filename(entry_filename.get(), is_metadata=False)
             root.destroy()
-            run_spider(start_year, end_year, filename)
+            run_spider(start_year, end_year, filename, mevzuat_turu_var.get())
 
     def fetch_all():
+        selected_type = mevzuat_turu_var.get()
+        if selected_type in ["Cumhurbaşkanı Kararları", "Cumhurbaşkanlığı Genelgeleri"]:
+            messagebox.showwarning(
+                "Desteklenmeyen Mevzuat Türü",
+                "Seçilen mevzuat türü için tam metin çekimi desteklenmemektedir. Metaverileri çekerek doküman linklerini alabilirsiniz. Lütfen farklı bir mevzuat türü seçiniz."
+            )
+            return
+            
         filename = get_output_filename(entry_filename.get(), is_metadata=False)
         root.destroy()
-        run_spider(filename=filename)
+        run_spider(filename=filename, mevzuat_turu=mevzuat_turu_var.get())
 
     def fetch_metadata():
         start_year, end_year = validate_years(entry_start_year.get(), entry_end_year.get())
@@ -181,7 +200,7 @@ def start_gui():
 
     submit_button = ctk.CTkButton(
         text_ops_frame,
-        text="Yıl Aralığına Göre Ara",
+        text="Yıl Aralığına Göre Tüm Metni Çek",
         command=on_submit,
         height=45,
         font=("Segoe UI", 14),
@@ -215,7 +234,7 @@ def start_gui():
 
     metadata_button = ctk.CTkButton(
         meta_ops_frame,
-        text="Seçili Yıllar İçin Meta Veri",
+        text="Yıl Aralığına Göre Meta Veri Çek",
         command=fetch_metadata,
         height=45,
         font=("Segoe UI", 14),
@@ -240,7 +259,7 @@ def start_gui():
     info_frame.pack(fill="x", pady=20)
     
     info_text = """Tam Metin: Mevzuatın tam içeriğini çeker (Selenium kullanır)
-Meta Veri: Sadece özet bilgileri çeker (Mevzuat Türü seçimi geçerlidir)"""
+Meta Veri: Sadece özet bilgileri çeker"""
     
     info_label = ctk.CTkLabel(
         info_frame,

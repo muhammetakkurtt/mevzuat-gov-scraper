@@ -10,32 +10,73 @@ from bs4 import BeautifulSoup
 class MevzuatSeleniumSpider(scrapy.Spider):
     name = "MevzuatSeleniumSpider"
     start_urls = ['https://www.mevzuat.gov.tr']
+    
+    MEVZUAT_SELECTORS = {
+        "Kanun": {
+            "link_title": "Kanunlar",
+            "form_id": "kanunlar_form"
+        },
+        "Cumhurbaşkanlığı Kararnamesi": {
+            "link_title": "Cumhurbaşkanlığı Kararnameleri",
+            "form_id": "cumhurbaskanligiKararnameleri_form"
+        },
+        "Cumhurbaşkanlığı ve Bakanlar Kurulu Yönetmeliği": {
+            "link_title": "Cumhurbaşkanlığı ve Bakanlar Kurulu Yönetmelikleri",
+            "form_id": "cumhurbaskanligiveBakanlarKuruluYonetmelikleri_form"
+        },
+        "Kanun Hükmünde Kararname": {
+            "link_title": "Kanun Hükmünde Kararnameler",
+            "form_id": "kanunHukmundeKararnameler_form"
+        },
+        "Tüzük": {
+            "link_title": "Tüzükler",
+            "form_id": "tuzukler_form"
+        },
+        "Kurum ve Kuruluş Yönetmeliği": {
+            "link_title": "Kurum Kuruluş ve Üniversite Yönetmelikleri",
+            "form_id": "kurumKurulusVeUniversiteYonetmelikleri_form"
+        },
+        "Tebliğ": {
+            "link_title": "Tebliğler",
+            "form_id": "tebligler_form"
+        }
+    }
 
-    def __init__(self, start_year=None, end_year=None, *args, **kwargs):
+    def __init__(self, start_year=None, end_year=None, mevzuat_turu="Kanun", *args, **kwargs):
         super(MevzuatSeleniumSpider, self).__init__(*args, **kwargs)
         options = Options()
-        options.headless = True  # Tarayıcıyı başsız modda çalıştır
+        options.headless = True
         self.driver = webdriver.Chrome(options=options)
         
-        # Kullanıcıdan alınan yıllar
         self.start_year = start_year
         self.end_year = end_year
-
+        self.mevzuat_turu = mevzuat_turu
+        
     def parse(self, response):
         self.driver.get(response.url)
+        
+        # Seçilen mevzuat türüne göre selector'ları al
+        selectors = self.MEVZUAT_SELECTORS.get(self.mevzuat_turu)
+        if not selectors:
+            raise ValueError(f"Desteklenmeyen mevzuat türü: {self.mevzuat_turu}")
+            
+        # İlgili mevzuat türü linkine tıkla
         WebDriverWait(self.driver, 20).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'a[title="Kanunlar"]'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, f'a[title="{selectors["link_title"]}"]'))
         ).click()
 
         # Arama formunu bekle
         WebDriverWait(self.driver, 20).until(
-            EC.presence_of_element_located((By.ID, "kanunlar_form"))
+            EC.presence_of_element_located((By.ID, selectors["form_id"]))
         )
+ 
+        # Form elementini bul
+        form = self.driver.find_element(By.ID, selectors["form_id"])
 
-        # Kullanıcıdan alınan yıllara göre arama yap
-        self.driver.find_element(By.ID, "BaslangicTarihi").send_keys(str(self.start_year))
-        self.driver.find_element(By.ID, "BitisTarihi").send_keys(str(self.end_year))
-        self.driver.find_element(By.ID, "btnSearch").click()
+        # Form içindeki elementleri bul
+        form.find_element(By.ID, "BaslangicTarihi").send_keys(str(self.start_year))
+        form.find_element(By.ID, "BitisTarihi").send_keys(str(self.end_year))
+        form.find_element(By.ID, "btnSearch").click()
         
         # Sayfanın tamamen yüklendiğinden emin ol
         WebDriverWait(self.driver, 20).until(
