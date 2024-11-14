@@ -18,6 +18,10 @@ Bu proje, belirlediğiniz yıllar arasında yayımlanan mevzuatlar/kanunlar içi
 ## Özellikler
 
 - Belirli yıllar arasında yayımlanan mevzuatları tarar.
+- İki farklı veri çekme yöntemi sunar:
+  - Tam Metin: Mevzuatın tam içeriğini çeker (Selenium kullanır)
+  - Meta Veri: Sadece özet bilgileri çeker 
+- Mevzuat türü seçimi (Kanun, Tüzük, Yönetmelik vb.)
 - Mevzuatın tam metnini web sitesinden çeker ve JSON formatında kaydeder.
 - Selenium ile tarayıcıyı kontrol eder, Scrapy ile sayfaları kazır.
 - Başlangıç ve bitiş yıllarını Tkinter tabanlı GUI ile girebilirsiniz.
@@ -45,6 +49,8 @@ Gerekli paketler:
 - `spacy`
 - `tqdm`
 - `git-lfs`
+- `requests`
+- `numpy`
 
 ### Adım 2: Selenium WebDriver
 
@@ -60,7 +66,21 @@ Proje, kullanıcının başlangıç ve bitiş yılını girerek kolayca Scrapy �
 ```bash
 python main.py
 ```
-Başlatıldığında, açılan pencerede başlangıç ve bitiş yıllarını girin. Program girilen yıllar arasındaki tüm mevzuatları tarayıp kaydedecektir. Eğer tüm mevzuatları çekmek istiyorsanız "Tüm Kanunları Çek" butonuna basınız.
+GUI üzerinden iki tür veri çekebilirsiniz:
+1. **Tam Metin**: Mevzuatın tam içeriğini çeker (Selenium kullanır)
+2. **Meta Veri**: Sadece özet bilgileri çeker
+
+Her iki seçenek için de:
+- Belirli yıllar arasındaki verileri çekebilir
+- Tüm yılların verilerini çekebilirsiniz
+
+Meta veri çekimi için mevzuat türünü seçebilirsiniz:
+- Kanun
+- Cumhurbaşkanlığı Kararnamesi
+- Tüzük
+- Yönetmelik
+- ve diğerleri...
+
 ### Mevzuat Verilerini Ayrıştırma
 Toplanan mevzuat verilerini ayrıştırmak için mevzuat_parser.py dosyası kullanılır. JSON dosyasındaki ham verileri işler, regex ve doğal dil işleme (NLP) yöntemleriyle kanun adı, kanun numarası, kabul tarihi, resmi gazete bilgileri ve kanun maddelerini çıkarır. Ayrıştırma işlemini başlatmak için şu komutu çalıştırabilirsiniz:
 ```bash
