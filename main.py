@@ -1,4 +1,3 @@
-import sys
 import os
 import customtkinter as ctk
 from tkinter import messagebox
@@ -6,12 +5,7 @@ from datetime import datetime
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from mevzuat_scraper.spiders.mevzuat_metadata_scraper import MevzuatMetadataScraper
-
-# 'spiders' klasörünü Python'un modül arama yoluna ekle
-sys.path.append(os.path.join(os.path.dirname(__file__), 'mevzuat_scraper', 'spiders'))
-
-# mevzuat_spider modülünü içe aktar
-from mevzuat_spider import MevzuatSeleniumSpider
+from mevzuat_scraper.spiders.mevzuat_spider import MevzuatSeleniumSpider
 
 def get_output_filename(filename, is_metadata=False):
     if not filename:
