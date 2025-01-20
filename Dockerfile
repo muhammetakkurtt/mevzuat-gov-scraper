@@ -40,6 +40,6 @@ RUN poetry install --no-root
 
 # Copy the rest of the application code
 COPY . .
-echo $DISPLAY
+
 # Set the default command to run your application
 CMD ["poetry", "run", "python", "main.py"]
