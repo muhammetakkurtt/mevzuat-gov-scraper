@@ -53,7 +53,7 @@ def start_gui():
         start_year, end_year = validate_years(entry_start_year.get(), entry_end_year.get())
         if start_year is not None and end_year is not None:
             filename = get_output_filename(entry_filename.get(), is_metadata=False)
-            root.destroy()
+            # root.destroy()
             run_spider(start_year, end_year, filename, mevzuat_turu_var.get())
 
     def fetch_all():
@@ -66,7 +66,7 @@ def start_gui():
             return
             
         filename = get_output_filename(entry_filename.get(), is_metadata=False)
-        root.destroy()
+        # root.destroy()
         run_spider(filename=filename, mevzuat_turu=mevzuat_turu_var.get())
 
     def fetch_metadata():
