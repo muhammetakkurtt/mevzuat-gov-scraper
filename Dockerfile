@@ -10,7 +10,7 @@ ENV POETRY_VERSION=1.7.0 \
 # Add Poetry to the PATH
 ENV PATH="$POETRY_HOME/bin:$PATH"
 
-# Install system dependencies and Tcl/Tk for tkinter
+# Install system dependencies, Chromium, and ChromiumDriver
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     curl \
@@ -22,8 +22,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zlib1g-dev \
     tcl-dev \
     tk-dev \
+    wget \
+    unzip \
+    chromium \
+    chromium-driver \
+    gnupg \
+    ca-certificates \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+# Set Chromium environment variables
+ENV CHROME_BIN=/usr/bin/chromium \
+    CHROME_DRIVER=/usr/bin/chromedriver
 
 # Install Poetry
 RUN curl -sSL https://install.python-poetry.org | python3 - && \
