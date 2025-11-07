@@ -8,6 +8,7 @@ cython_debug/
 
 
 *.json
+*.csv
 
 *.log
 
